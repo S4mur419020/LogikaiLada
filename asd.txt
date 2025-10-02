@@ -1,0 +1,5 @@
+3 ládánk van és ki kell választani melyikben van a kincs
+és csak az egyik felirat igaz
+aranyláda (én rejtem a kincset)
+ezüst(nem én rejtem a kincset)
+bronz(az arany hazudik)
