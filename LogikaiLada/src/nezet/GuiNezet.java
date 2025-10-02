@@ -1,15 +1,51 @@
-
 package nezet;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JRadioButton;
 
 public class GuiNezet extends javax.swing.JFrame {
 
-    
     public GuiNezet() {
         initComponents();
     }
 
-    
+    public JButton getBtnUjra() {
+
+        return jButton1;
+
+    }
+
+    public JRadioButton getRdbArany() {
+
+        return jRadioButton1;
+
+    }
+
+    public JRadioButton getRdbEzust() {
+
+        return jRadioButton2;
+
+    }
+
+    public JRadioButton getRdbBronz() {
+
+        return jRadioButton3;
+
+    }
+
+    public ButtonGroup getButtonGroup1() {
+
+        return buttonGroup1;
+
+    }
+
+    public void mutat(String uzenet) {
+
+        jTextPane1.setText(uzenet);
+
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -197,7 +233,6 @@ public class GuiNezet extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -205,7 +240,7 @@ public class GuiNezet extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.    swing.UIManager.getInstalledLookAndFeels()) {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
