@@ -4,7 +4,6 @@ public class LadaModell {
     private String nev;          
     private String felirat;      
     private boolean tartalmazKincset;
-
    
     public LadaModell() {
         this("Ismeretlen láda", "Nincs felirat", false);
@@ -14,14 +13,12 @@ public class LadaModell {
     public LadaModell(String nev) {
         this(nev, "Nincs felirat", false);
     }
-
     
     public LadaModell(String nev, String felirat, boolean tartalmazKincset) {
         this.nev = nev;
         this.felirat = felirat;
         this.tartalmazKincset = tartalmazKincset;
     }
-
     
     public String getNev() {
         return nev;

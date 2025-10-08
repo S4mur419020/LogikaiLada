@@ -11,39 +11,27 @@ public class GuiNezet extends javax.swing.JFrame {
     }
 
     public JButton getBtnUjra() {
-
         return jButton1;
-
     }
 
     public JRadioButton getRdbArany() {
-
         return jRadioButton1;
-
     }
 
     public JRadioButton getRdbEzust() {
-
         return jRadioButton2;
-
     }
 
     public JRadioButton getRdbBronz() {
-
         return jRadioButton3;
-
     }
 
     public ButtonGroup getButtonGroup1() {
-
         return buttonGroup1;
-
     }
 
     public void mutat(String uzenet) {
-
         jTextPane1.setText(uzenet);
-
     }
 
     @SuppressWarnings("unchecked")
