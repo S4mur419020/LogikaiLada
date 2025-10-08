@@ -1,7 +1,7 @@
 package main;
 
 //import modell.LadaModell;
-
+//
 
 public class LogikaiLada {
 //    public LogikaiLada(){
