@@ -52,9 +52,9 @@ public class LogikaiLadaController {
 
             String uzenet;
             if (valasztott.equals(modell.getNev())) {
-                uzenet = "Gratulálok! A(z) " + valasztott + " ládában volt a kincs!";
+                uzenet = "🎉 Gratulálok! A(z) " + valasztott + " ládában volt a kincs!";
             } else {
-                uzenet = "Sajnos nem talált! A kincs a " + modell.getNev() + " ládában volt.";
+                uzenet = "😢 Sajnos nem talált! A kincs a " + modell.getNev() + " ládában volt.";
             }
 
             nezet.mutat(uzenet);
