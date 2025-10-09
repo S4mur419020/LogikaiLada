@@ -8,6 +8,7 @@ public class GuiNezet extends javax.swing.JFrame {
 
     public GuiNezet() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
     }
 
     public JButton getBtnUjra() {
@@ -55,6 +56,11 @@ public class GuiNezet extends javax.swing.JFrame {
         jTextPane1 = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("JátékTér"));
 
@@ -220,6 +226,20 @@ public class GuiNezet extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        int valasz = javax.swing.JOptionPane.showConfirmDialog(
+        this,
+        "Biztosan ki szeretnél lépni?",
+        "Kilépés megerősítése",
+        javax.swing.JOptionPane.YES_NO_OPTION,
+        javax.swing.JOptionPane.QUESTION_MESSAGE
+    );
+
+    if (valasz == javax.swing.JOptionPane.YES_OPTION) {
+        System.exit(0);
+    }
+    }//GEN-LAST:event_formWindowClosing
 
   
 
