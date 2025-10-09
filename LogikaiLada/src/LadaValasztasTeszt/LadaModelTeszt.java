@@ -18,10 +18,15 @@ public class LadaModelTeszt {
 
         LadaModell[] ladak = {arany, ezust, bronz};
         
-//        /*Boti*/
-//        tesztFeliratokTartalmazzakASzuksegesSzovegeket(ladak);
-//        tesztLadakSzama(ladak);
-//        tesztCsakEgyLadaTartalmazKincset(ladak);
+        
+        
+        
+        /*Boti*/
+        tesztFeliratokTartalmazzakASzuksegesSzovegeket(ladak);
+        tesztLadakSzama(ladak);
+        tesztCsakEgyLadaTartalmazKincset(ladak);
+        tesztCsak2DbLada();
+        tesztMasSzovegetTartalmazLada();
         
         /*Bence*/
         tesztNevHibasKivetel();
@@ -30,11 +35,15 @@ public class LadaModelTeszt {
         
         /*Tomi*/
         
-//        tesztHelyesValasztas();
-//        tesztHelytelenValasztas();
-//        tesztMegfeleloSzobeg();
-//    
+        tesztHelyesValasztas();
+        tesztHelytelenValasztas();
+        tesztMegfeleloSzobeg();
+    
     }
+
+   
+    
+    
      private static void tesztFeliratokTartalmazzakASzuksegesSzovegeket(LadaModell[] ladak) {
         String aranyFelirat = ladak[0].getFelirat();
         String ezustFelirat = ladak[1].getFelirat();
@@ -68,6 +77,35 @@ public class LadaModelTeszt {
         assert kincsesDb == 1 : "Csak egy ládában lehet kincs, de " + kincsesDb + " ládában van!";
          System.out.println("A teszt lefutott");
     }
+    
+     private static void tesztMasSzovegetTartalmazLada() {
+        LadaModell[] hibasLadak2 = {
+            new LadaModell("Arany", "Valami más szöveg", true),
+            new LadaModell("Ezüst", "Nem én rejtem a kincset!", false),
+            new LadaModell("Bronz", "Az arany láda hazudik!", false)
+        };
+        try {
+            tesztFeliratokTartalmazzakASzuksegesSzovegeket(hibasLadak2);
+        } catch (AssertionError e) {
+            System.out.println("HIBA elkapva: " + e.getMessage());
+        }
+    }
+
+     
+    private static void tesztCsak2DbLada() {
+        LadaModell[] hibasLadak1 = {
+            new LadaModell("Arany", "Én rejtem a kincset!", true),
+            new LadaModell("Ezüst", "Nem én rejtem a kincset!", false)
+                
+        };
+        try {
+            tesztLadakSzama(hibasLadak1);
+        } catch (AssertionError e) {
+            System.out.println("HIBA elkapva: " + e.getMessage());
+        }
+    }
+    
+    
 
     public static void tesztNevHibasKivetel() {
         LadaModell lada = new LadaModell();
