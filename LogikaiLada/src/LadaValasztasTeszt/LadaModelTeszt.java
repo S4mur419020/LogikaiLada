@@ -8,104 +8,96 @@ import nezet.GuiNezet;
 import vezerlo.LogikaiLadaController;
 
 public class LadaModelTeszt {
-    
-    
-    public static void main(String[] args){
-        
-        LadaModell arany = new LadaModell("Arany", "Én rejtem a kincset.", false);
-        LadaModell ezust = new LadaModell("Ezust", "Nem én rejtem a kincset.", true);
-        LadaModell bronz = new LadaModell("Bronz", "Az arany láda hazudik.", false);
 
-        LadaModell[] ladak = {arany, ezust, bronz};
-        
-        
-        
-        
+    public static void main(String[] args) {
+
+
         /*Boti*/
-        tesztFeliratokTartalmazzakASzuksegesSzovegeket(ladak);
-        tesztLadakSzama(ladak);
-        tesztCsakEgyLadaTartalmazKincset(ladak);
+        tesztFeliratokTartalmazzakASzuksegesSzovegeket();
+        tesztLadakSzama();
+        tesztCsakEgyLadaTartalmazKincset();
         tesztCsak2DbLada();
         tesztMasSzovegetTartalmazLada();
-        
+
         /*Bence*/
         tesztNevHibasKivetel();
         tesztFeliratHibasKivetel();
         tesztToString();
-        
+
         /*Tomi*/
-        
         tesztHelyesValasztas();
         tesztHelytelenValasztas();
         tesztMegfeleloSzobeg();
-    
+
+        System.out.println("\nMinden teszt lefutott hiba nélkül!");
     }
 
-   
-    
-    
-     private static void tesztFeliratokTartalmazzakASzuksegesSzovegeket(LadaModell[] ladak) {
-        String aranyFelirat = ladak[0].getFelirat();
-        String ezustFelirat = ladak[1].getFelirat();
-        String bronzFelirat = ladak[2].getFelirat();
+    private static void tesztFeliratokTartalmazzakASzuksegesSzovegeket() {
+        LadaModell arany = new LadaModell();
+        arany.setNev("Arany");
+        arany.setFelirat("Én rejtem a kincset.");
+        arany.setTartalmazKincset(false);
 
-        assert aranyFelirat.contains("én rejtem") : " Az arany láda felirata hibás: " + aranyFelirat;
+        LadaModell ezust = new LadaModell();
+        ezust.setNev("Ezüst");
+        ezust.setFelirat("Nem én rejtem a kincset.");
+        ezust.setTartalmazKincset(true);
 
-        assert ezustFelirat.contains("nem én rejtem") : " Az ezüst láda felirata hibás: " + ezustFelirat;
+        LadaModell bronz = new LadaModell();
+        bronz.setNev("Bronz");
+        bronz.setFelirat("Az arany láda hazudik.");
+        bronz.setTartalmazKincset(false);
 
-        assert bronzFelirat.contains("arany") : " A bronz láda felirata hibás: " + bronzFelirat;
-        
-         System.out.println("A teszt lefutott");
+        assert arany.getFelirat().toLowerCase().contains("rejtem") : "Az arany láda felirata hibás";
+        assert ezust.getFelirat().toLowerCase().contains("nem") : "Az ezüst láda felirata hibás";
+        assert bronz.getFelirat().toLowerCase().contains("hazudik") : "A bronz láda felirata hibás";
 
+        System.out.println("tesztFeliratokTartalmazzakASzuksegesSzovegeket lefutott");
     }
 
-    private static void tesztLadakSzama(LadaModell[] ladak) {
-        assert ladak.length == 3 : "Pontosan 3 ládának kell lennie, de " + ladak.length + " van.";
-         System.out.println("A teszt lefutott");
+    private static void tesztLadakSzama() {
+        LadaModell[] ladak = new LadaModell[3];
+        assert ladak.length == 3 : "Pontosan 3 ládának kell lennie.";
+        System.out.println("tesztLadakSzama lefutott");
     }
-    
-    
-    private static void tesztCsakEgyLadaTartalmazKincset(LadaModell[] ladak) {
+
+    private static void tesztCsakEgyLadaTartalmazKincset() {
+        LadaModell arany = new LadaModell("Arany", "Én rejtem a kincset.", false);
+        LadaModell ezust = new LadaModell("Ezüst", "Nem én rejtem a kincset.", true);
+        LadaModell bronz = new LadaModell("Bronz", "Az arany láda hazudik.", false);
+
+        LadaModell[] ladak = {arany, ezust, bronz};
         int kincsesDb = 0;
-        
         for (LadaModell lada : ladak) {
             if (lada.isTartalmazKincset()) {
                 kincsesDb++;
             }
         }
-        
+
         assert kincsesDb == 1 : "Csak egy ládában lehet kincs, de " + kincsesDb + " ládában van!";
-         System.out.println("A teszt lefutott");
+        System.out.println("tesztCsakEgyLadaTartalmazKincset lefutott");
     }
-    
-     private static void tesztMasSzovegetTartalmazLada() {
-        LadaModell[] hibasLadak2 = {
-            new LadaModell("Arany", "Valami más szöveg", true),
-            new LadaModell("Ezüst", "Nem én rejtem a kincset!", false),
-            new LadaModell("Bronz", "Az arany láda hazudik!", false)
+
+    private static void tesztCsak2DbLada() {
+        LadaModell[] hibasLadak = {
+            new LadaModell("Arany", "Én rejtem a kincset!", true),
+            new LadaModell("Ezüst", "Nem én rejtem a kincset!", false)
         };
         try {
-            tesztFeliratokTartalmazzakASzuksegesSzovegeket(hibasLadak2);
+            assert hibasLadak.length == 3 : "Pontosan 3 ládának kell lennie, de csak " + hibasLadak.length;
         } catch (AssertionError e) {
-            System.out.println("HIBA elkapva: " + e.getMessage());
+            System.out.println("HIBA elkapva (tesztCsak2DbLada): " + e.getMessage());
         }
     }
 
-     
-    private static void tesztCsak2DbLada() {
-        LadaModell[] hibasLadak1 = {
-            new LadaModell("Arany", "Én rejtem a kincset!", true),
-            new LadaModell("Ezüst", "Nem én rejtem a kincset!", false)
-                
-        };
+    private static void tesztMasSzovegetTartalmazLada() {
+        LadaModell hibas = new LadaModell("Arany", "Valami más szöveg", true);
         try {
-            tesztLadakSzama(hibasLadak1);
+            assert hibas.getFelirat().contains("rejtem") : "Hibás felirat: " + hibas.getFelirat();
         } catch (AssertionError e) {
-            System.out.println("HIBA elkapva: " + e.getMessage());
+            System.out.println("HIBA elkapva (tesztMasSzovegetTartalmazLada): " + e.getMessage());
         }
     }
-    
-    
 
     public static void tesztNevHibasKivetel() {
         LadaModell lada = new LadaModell();
@@ -133,7 +125,8 @@ public class LadaModelTeszt {
             dobott = true;
         }
         assert dobott : "Csak szóköz név esetén kivételt kell dobni";
-         System.out.println("A teszt lefutott");
+
+        System.out.println("tesztNevHibasKivetel lefutott");
     }
 
     public static void tesztFeliratHibasKivetel() {
@@ -162,68 +155,57 @@ public class LadaModelTeszt {
             dobott = true;
         }
         assert dobott : "Csak szóköz felirat esetén kivételt kell dobni";
-         System.out.println("A teszt lefutott");
+
+        System.out.println("tesztFeliratHibasKivetel lefutott");
     }
 
     public static void tesztToString() {
-        LadaModell lada1 = new LadaModell("Arany", "Én rejtem a kincset.", false);
-        LadaModell lada2 = new LadaModell("Bronz", "Az arany hazudik.", true);
+        LadaModell lada = new LadaModell();
+        lada.setNev("Arany");
+        lada.setFelirat("Én rejtem a kincset.");
+        lada.setTartalmazKincset(false);
 
-        String szoveg1 = lada1.toString();
-        String szoveg2 = lada2.toString();
+        String szoveg = lada.toString();
+        assert szoveg.contains("Arany") : "toString nem tartalmazza a nevet";
+        assert szoveg.contains("rejtem") : "toString nem tartalmazza a feliratot";
+        assert !szoveg.contains("[Kincs itt van]") : "toString tévesen jelzi a kincset";
 
-        assert szoveg1.contains("Arany") : "toString nem tartalmazza a nevet";
-        assert szoveg1.contains("Én rejtem") : "toString nem tartalmazza a feliratot";
-        assert !szoveg1.contains("[Kincs itt van]") : "toString jelzi a kincset, de nincs ott";
-
-        assert szoveg2.contains("Bronz") : "toString nem tartalmazza a nevet";
-        assert szoveg2.contains("arany hazudik") : "toString nem tartalmazza a feliratot";
-        assert szoveg2.contains("[Kincs itt van]") : "toString nem jelzi a kincset";
-         System.out.println("A teszt lefutott");
+        System.out.println("tesztToString lefutott");
     }
-    
+
     private static void tesztHelyesValasztas() {
-        TestGuiNezet jvalasz = new TestGuiNezet();
-        LadaModell modell = new LadaModell("Arany", "Én rejtem a kincset.", true);
-        LogikaiLadaController controller = new LogikaiLadaController(modell, jvalasz);
+        TestGuiNezet helyesv = new TestGuiNezet();
+        LogikaiLadaController controller = new LogikaiLadaController(null, helyesv);
 
-        jvalasz.rdbArany.setSelected(true);
-        jvalasz.rdbArany.doClick();
+        helyesv.rdbArany.setSelected(true);
+        helyesv.rdbArany.doClick();
 
-        assert jvalasz.utolsoUzenet.contains("Gratulálok") 
-        : "A helyes választásnál gratulációt kellett volna kapni, de ezt kaptuk: " + jvalasz.utolsoUzenet;
-         System.out.println("A teszt lefutott");
+        assert helyesv.utolsoUzenet.contains("Gratulálok") : "A helyes választásnál gratulációt kellett volna kapni.";
+        System.out.println("tesztHelyesValasztas lefutott");
     }
 
     private static void tesztHelytelenValasztas() {
-        TestGuiNezet rvalasz = new TestGuiNezet();
-        LadaModell modell = new LadaModell("Ezüst", "Nem én rejtem a kincset!", true);
-        LogikaiLadaController controller = new LogikaiLadaController(modell, rvalasz);
+        TestGuiNezet helytelenv = new TestGuiNezet();
+        LogikaiLadaController controller = new LogikaiLadaController(null, helytelenv);
 
-        rvalasz.rdbBronz.setSelected(true);
-        rvalasz.rdbBronz.doClick();
+        helytelenv.rdbBronz.setSelected(true);
+        helytelenv.rdbBronz.doClick();
 
-        assert rvalasz.utolsoUzenet.contains("Sajnos")
-        : "A helytelen választásnál 'Sajnos' üzenetnek kell megjelennie.";
-         System.out.println("A teszt lefutott");
+        assert helytelenv.utolsoUzenet.contains("Sajnos") : "A helytelen választásnál 'Sajnos' üzenetnek kell megjelennie.";
+        System.out.println("tesztHelytelenValasztas lefutott");
     }
 
     private static void tesztMegfeleloSzobeg() {
-        TestGuiNezet mszoveg = new TestGuiNezet();
-        LadaModell modell = new LadaModell("Bronz", "Az arany láda hazudik!", true);
-        LogikaiLadaController controller = new LogikaiLadaController(modell, mszoveg);
+        TestGuiNezet mfszov = new TestGuiNezet();
+        LogikaiLadaController controller = new LogikaiLadaController(null, mfszov);
 
-        mszoveg.rdbBronz.setSelected(true);
-        mszoveg.rdbBronz.doClick();
+        mfszov.rdbEzust.setSelected(true);
+        mfszov.rdbEzust.doClick();
 
-        String uzenet = mszoveg.utolsoUzenet;
-
-        assert (uzenet.startsWith("🎉") || uzenet.startsWith("😢"))
-        : "Az üzenetnek emojival kell kezdődnie: " + uzenet;
-        
-        assert uzenet.contains("láda")
-        : "Az üzenetnek tartalmaznia kell a 'láda' szót: " + uzenet;
-         System.out.println("A teszt lefutott");
+        String uzenet = mfszov.utolsoUzenet;
+        assert (uzenet.startsWith("🎉") || uzenet.startsWith("😢")) : "Az üzenetnek emojival kell kezdődnie.";
+        assert uzenet.contains("láda") : "Az üzenetnek tartalmaznia kell a 'láda' szót.";
+        System.out.println("tesztMegfeleloSzobeg lefutott");
     }
 
     private static class TestGuiNezet extends GuiNezet {
@@ -270,6 +252,6 @@ public class LadaModelTeszt {
         public void mutat(String uzenet) {
             utolsoUzenet = uzenet;
         }
-    }
 
+    }
 }

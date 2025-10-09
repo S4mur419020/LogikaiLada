@@ -2,17 +2,21 @@ package vezerlo;
 
 import modell.LadaModell;
 import nezet.GuiNezet;
-
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LogikaiLadaController {
-    private final LadaModell modell;
+    private LadaModell modell;
     private final GuiNezet nezet;
 
     public LogikaiLadaController(LadaModell modell, GuiNezet nezet) {
-        this.modell = modell;
+        
+        if (modell == null) {
+            this.modell = new LadaModell();
+        } else {
+            this.modell = modell;
+        }
+
         this.nezet = nezet;
         init();
     }
@@ -34,7 +38,9 @@ public class LogikaiLadaController {
             case 1 -> modell.setNev("Ezüst");
             case 2 -> modell.setNev("Bronz");
         }
+
         modell.setTartalmazKincset(true);
+        modell.setFelirat("Én rejtem a kincset."); 
 
         nezet.getButtonGroup1().clearSelection();
         nezet.mutat("Válaszd ki, melyik ládában van a kincs!");
@@ -44,11 +50,11 @@ public class LogikaiLadaController {
         @Override
         public void actionPerformed(ActionEvent e) {
             String valasztott = "";
-            if (nezet.getRdbArany().isSelected()){
+            if (nezet.getRdbArany().isSelected()) {
                 valasztott = "Arany";
-            }else if (nezet.getRdbEzust().isSelected()){
+            } else if (nezet.getRdbEzust().isSelected()) {
                 valasztott = "Ezüst";
-            }else if (nezet.getRdbBronz().isSelected()){
+            } else if (nezet.getRdbBronz().isSelected()) {
                 valasztott = "Bronz";
             }
 
