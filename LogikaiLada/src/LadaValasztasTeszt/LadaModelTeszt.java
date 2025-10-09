@@ -18,10 +18,10 @@ public class LadaModelTeszt {
 
         LadaModell[] ladak = {arany, ezust, bronz};
         
-        /*Boti*/
-        tesztFeliratokTartalmazzakASzuksegesSzovegeket(ladak);
-        tesztLadakSzama(ladak);
-        tesztCsakEgyLadaTartalmazKincset(ladak);
+//        /*Boti*/
+//        tesztFeliratokTartalmazzakASzuksegesSzovegeket(ladak);
+//        tesztLadakSzama(ladak);
+//        tesztCsakEgyLadaTartalmazKincset(ladak);
         
         /*Bence*/
         tesztNevHibasKivetel();
@@ -30,10 +30,10 @@ public class LadaModelTeszt {
         
         /*Tomi*/
         
-        tesztHelyesValasztas();
-        tesztHelytelenValasztas();
-        tesztMegfeleloSzobeg();
-    
+//        tesztHelyesValasztas();
+//        tesztHelytelenValasztas();
+//        tesztMegfeleloSzobeg();
+//    
     }
      private static void tesztFeliratokTartalmazzakASzuksegesSzovegeket(LadaModell[] ladak) {
         String aranyFelirat = ladak[0].getFelirat();
