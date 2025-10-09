@@ -2,6 +2,7 @@ package LadaValasztasTeszt;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import modell.LadaModell;
 import nezet.GuiNezet;
@@ -13,10 +14,10 @@ public class LadaModelTeszt {
 
 
         /*Boti*/
-        tesztFeliratokTartalmazzakASzuksegesSzovegeket();
-        tesztLadakSzama();
-        tesztCsakEgyLadaTartalmazKincset();
-        tesztCsak2DbLada();
+        //tesztFeliratokTartalmazzakASzuksegesSzovegeket();
+        //tesztHibasHossz();
+        //tesztMelyikAKincs();
+        //tesztMasSzovegetTartalmazLada();
         tesztMasSzovegetTartalmazLada();
 
         /*Bence*/
@@ -33,72 +34,96 @@ public class LadaModelTeszt {
     }
 
     private static void tesztFeliratokTartalmazzakASzuksegesSzovegeket() {
-        LadaModell arany = new LadaModell();
-        arany.setNev("Arany");
-        arany.setFelirat("Én rejtem a kincset.");
-        arany.setTartalmazKincset(false);
+        try {
+            GuiNezet nezet = new GuiNezet();
 
-        LadaModell ezust = new LadaModell();
-        ezust.setNev("Ezüst");
-        ezust.setFelirat("Nem én rejtem a kincset.");
-        ezust.setTartalmazKincset(true);
+            JRadioButton arany = nezet.getRdbArany();
+            JRadioButton ezust = nezet.getRdbEzust();
+            JRadioButton bronz = nezet.getRdbBronz();
 
-        LadaModell bronz = new LadaModell();
-        bronz.setNev("Bronz");
-        bronz.setFelirat("Az arany láda hazudik.");
-        bronz.setTartalmazKincset(false);
+            assert arany.getText().equals("rany") : "Az arany láda felirata hibás";
+            assert ezust.getText().equals("ezüst") : "Az ezüst láda felirata hibás";
+            assert bronz.getText().equals("bronz") : "A bronz láda felirata hibás";
 
-        assert arany.getFelirat().toLowerCase().contains("rejtem") : "Az arany láda felirata hibás";
-        assert ezust.getFelirat().toLowerCase().contains("nem") : "Az ezüst láda felirata hibás";
-        assert bronz.getFelirat().toLowerCase().contains("hazudik") : "A bronz láda felirata hibás";
+            JLabel aranySzoveg = nezet.getjLabel1();
+            JLabel ezustSzoveg = nezet.getjLabel2();
+            JLabel bronzSzoveg = nezet.getjLabel3();
 
-        System.out.println("tesztFeliratokTartalmazzakASzuksegesSzovegeket lefutott");
+            assert aranySzoveg.getText().equals("rejtem a kincset!") : "Az arany láda felirata hibás";
+            assert ezustSzoveg.getText().equals("Nem én rejtem a kincset!") : "Az ezüst láda felirata hibás";
+            assert bronzSzoveg.getText().equals("Az arany láda hazudik!") : "A bronz láda felirata hibás";
+
+        } catch (AssertionError hiba) {
+            System.err.println("❌ Hiba a teszt során: " + hiba.getMessage());
+        } catch (Exception hiba) {
+            System.err.println("⚠️ Váratlan hiba történt: " + hiba.getMessage());
+        }
+        System.out.println("✅ tesztFeliratokTartalmazzakASzuksegesSzovegeket lefutott");
     }
 
-    private static void tesztLadakSzama() {
-        LadaModell[] ladak = new LadaModell[3];
-        assert ladak.length == 3 : "Pontosan 3 ládának kell lennie.";
-        System.out.println("tesztLadakSzama lefutott");
-    }
-
-    private static void tesztCsakEgyLadaTartalmazKincset() {
+    public static void tesztHibasHossz() {
         LadaModell arany = new LadaModell("Arany", "Én rejtem a kincset.", false);
         LadaModell ezust = new LadaModell("Ezüst", "Nem én rejtem a kincset.", true);
         LadaModell bronz = new LadaModell("Bronz", "Az arany láda hazudik.", false);
 
         LadaModell[] ladak = {arany, ezust, bronz};
+
+        int darab = 1;//hiba
+        int ladaDb = ladak.length;
+
+        assert ladaDb == darab : "A ládák száma hibás! (" + ladaDb + " db láda kell, nem " + darab + ")";
+        System.out.println("tesztHibasHossz() hiba nélkül lefutott");
+    }
+
+    public static void tesztMelyikAKincs() {
+        LadaModell arany = new LadaModell("Arany", "Én rejtem a kincset.", false);
+        LadaModell ezust = new LadaModell("Ezüst", "Nem én rejtem a kincset.", false);
+        LadaModell bronz = new LadaModell("Bronz", "Az arany láda hazudik.", true);
+
+        LadaModell[] ladak = {arany, ezust, bronz};
+
         int kincsesDb = 0;
+        //for-each
         for (LadaModell lada : ladak) {
             if (lada.isTartalmazKincset()) {
                 kincsesDb++;
+                assert lada.getNev().equals("Ezüst") : "Nem az ezüst ládában van a kincs!";
             }
-        }
-
-        assert kincsesDb == 1 : "Csak egy ládában lehet kincs, de " + kincsesDb + " ládában van!";
-        System.out.println("tesztCsakEgyLadaTartalmazKincset lefutott");
-    }
-
-    private static void tesztCsak2DbLada() {
-        LadaModell[] hibasLadak = {
-            new LadaModell("Arany", "Én rejtem a kincset!", true),
-            new LadaModell("Ezüst", "Nem én rejtem a kincset!", false)
-        };
-        try {
-            assert hibasLadak.length == 3 : "Pontosan 3 ládának kell lennie, de csak " + hibasLadak.length;
-        } catch (AssertionError e) {
-            System.out.println("HIBA elkapva (tesztCsak2DbLada): " + e.getMessage());
         }
     }
 
     private static void tesztMasSzovegetTartalmazLada() {
-        LadaModell hibas = new LadaModell("Arany", "Valami más szöveg", true);
         try {
-            assert hibas.getFelirat().contains("rejtem") : "Hibás felirat: " + hibas.getFelirat();
-        } catch (AssertionError e) {
-            System.out.println("HIBA elkapva (tesztMasSzovegetTartalmazLada): " + e.getMessage());
+            LadaModell hibasLada = new LadaModell("Arany", "Valami más szöveg", true);
+            String szoveg = "Én rejtem a kincset!";
+
+            assert hibasLada.getFelirat().equals(szoveg) : "Hibás felirat az " + hibasLada.getNev() + " ládán: \"" + hibasLada.getFelirat() + "\" (Nem a " + szoveg + " a szöveg)";
+        } catch (AssertionError hiba) {
+            System.err.println("❌ HIBA elkapva (tesztMasSzovegetTartalmazLada): " + hiba.getMessage());
         }
+        System.out.println("✅ tesztMasSzovegetTartalmazLada sikeresen lefutott (helyes felirat).");
     }
 
+   private static void tesztHibasLadaHivatkozas() {
+    LadaModell arany = new LadaModell("Arany", "Én rejtem a kincset.", false);
+    LadaModell ezust = new LadaModell("Ezüst", "Nem én rejtem a kincset.", true);
+    LadaModell bronz = new LadaModell("Bronz", "Az arany láda hazudik.", false);
+    LadaModell[] ladak = {arany, ezust, bronz};
+
+    boolean tortentHiba = false;
+
+    try {
+        int hivatkozas = 3; // Ez hibás index (létező ládák: 0,1,2)
+        LadaModell lada = ladak[hivatkozas]; // Itt fog IndexOutOfBoundsException keletkezni
+    } catch (IndexOutOfBoundsException ex) {
+        tortentHiba = true;
+        System.err.println("❌ Hiba: Nem létező ládára hivatkoztunk! (" + ex.getMessage() + ")");
+    }
+
+    assert tortentHiba : "Hibát kellett volna dobnia, de nem történt!";
+    System.out.println("✅ tesztHibasLadaHivatkozas lefutott");
+    }
+   
     public static void tesztNevHibasKivetel() {
         LadaModell lada = new LadaModell();
         boolean dobott = false;

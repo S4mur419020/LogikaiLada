@@ -2,6 +2,7 @@ package nezet;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 
 public class GuiNezet extends javax.swing.JFrame {
@@ -13,6 +14,18 @@ public class GuiNezet extends javax.swing.JFrame {
 
     public JButton getBtnUjra() {
         return jButton1;
+    }
+
+    public JLabel getjLabel1() {
+        return jLabel1;
+    }
+
+    public JLabel getjLabel2() {
+        return jLabel2;
+    }
+
+    public JLabel getjLabel3() {
+        return jLabel3;
     }
 
     public JRadioButton getRdbArany() {
