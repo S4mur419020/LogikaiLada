@@ -3,7 +3,7 @@ package vezerlo;
 import modell.LadaModell;
 import nezet.GuiNezet;
 
-import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,7 +18,6 @@ public class LogikaiLadaController {
     }
 
     private void init() {
-        // Gomb események
         nezet.getBtnUjra().addActionListener(e -> ujraindit());
 
         nezet.getRdbArany().addActionListener(new LadaValaszto());
@@ -29,7 +28,6 @@ public class LogikaiLadaController {
     }
 
     private void ujraindit() {
-        // A játék újraindítása: véletlenszerűen választ kincses ládát
         int kincsIndex = (int) (Math.random() * 3);
         switch (kincsIndex) {
             case 0 -> modell.setNev("Arany");
@@ -46,9 +44,13 @@ public class LogikaiLadaController {
         @Override
         public void actionPerformed(ActionEvent e) {
             String valasztott = "";
-            if (nezet.getRdbArany().isSelected()) valasztott = "Arany";
-            else if (nezet.getRdbEzust().isSelected()) valasztott = "Ezüst";
-            else if (nezet.getRdbBronz().isSelected()) valasztott = "Bronz";
+            if (nezet.getRdbArany().isSelected()){
+                valasztott = "Arany";
+            }else if (nezet.getRdbEzust().isSelected()){
+                valasztott = "Ezüst";
+            }else if (nezet.getRdbBronz().isSelected()){
+                valasztott = "Bronz";
+            }
 
             String uzenet;
             if (valasztott.equals(modell.getNev())) {
