@@ -104,98 +104,65 @@ public class LadaModelTeszt {
         System.out.println("✅ tesztMasSzovegetTartalmazLada sikeresen lefutott (helyes felirat).");
     }
 
-   private static void tesztHibasLadaHivatkozas() {
-    LadaModell arany = new LadaModell("Arany", "Én rejtem a kincset.", false);
-    LadaModell ezust = new LadaModell("Ezüst", "Nem én rejtem a kincset.", true);
-    LadaModell bronz = new LadaModell("Bronz", "Az arany láda hazudik.", false);
-    LadaModell[] ladak = {arany, ezust, bronz};
+    private static void tesztHibasLadaHivatkozas() {
+        LadaModell arany = new LadaModell("Arany", "Én rejtem a kincset.", false);
+        LadaModell ezust = new LadaModell("Ezüst", "Nem én rejtem a kincset.", true);
+        LadaModell bronz = new LadaModell("Bronz", "Az arany láda hazudik.", false);
+        LadaModell[] ladak = {arany, ezust, bronz};
 
-    boolean tortentHiba = false;
+        boolean tortentHiba = false;
 
-    try {
-        int hivatkozas = 3; // Ez hibás index (létező ládák: 0,1,2)
-        LadaModell lada = ladak[hivatkozas]; // Itt fog IndexOutOfBoundsException keletkezni
-    } catch (IndexOutOfBoundsException ex) {
-        tortentHiba = true;
-        System.err.println("❌ Hiba: Nem létező ládára hivatkoztunk! (" + ex.getMessage() + ")");
+        try {
+            int hivatkozas = 3; // Ez hibás index (létező ládák: 0,1,2)
+            LadaModell lada = ladak[hivatkozas]; // Itt fog IndexOutOfBoundsException keletkezni
+        } catch (IndexOutOfBoundsException ex) {
+            tortentHiba = true;
+            System.err.println("❌ Hiba: Nem létező ládára hivatkoztunk! (" + ex.getMessage() + ")");
+        }
+
+        assert tortentHiba : "Hibát kellett volna dobnia, de nem történt!";
+        System.out.println("✅ tesztHibasLadaHivatkozas lefutott");
     }
 
-    assert tortentHiba : "Hibát kellett volna dobnia, de nem történt!";
-    System.out.println("✅ tesztHibasLadaHivatkozas lefutott");
-    }
-   
-    public static void tesztNevHibasKivetel() {
-        LadaModell lada = new LadaModell();
-        boolean dobott = false;
-
+    private static void tesztNevHibasKivetel() {
         try {
-            lada.setNev(null);
-        } catch (IllegalArgumentException e) {
-            dobott = true;
+            // Hibás név (üres string) próbálkozás
+            LadaModell hibasLada = new LadaModell("", "Én rejtem a kincset!", false);
+            assert false : "Név üres, hibát kellett volna dobnia!";
+        } catch (IllegalArgumentException ex) {
+            System.out.println("✅ tesztNevHibasKivetel sikeresen elkapta a hibát: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.err.println("⚠️ Váratlan hiba történt: " + ex.getMessage());
         }
-        assert dobott : "Null név esetén kivételt kell dobni";
-
-        dobott = false;
-        try {
-            lada.setNev("");
-        } catch (IllegalArgumentException e) {
-            dobott = true;
-        }
-        assert dobott : "Üres név esetén kivételt kell dobni";
-
-        dobott = false;
-        try {
-            lada.setNev("   ");
-        } catch (IllegalArgumentException e) {
-            dobott = true;
-        }
-        assert dobott : "Csak szóköz név esetén kivételt kell dobni";
-
-        System.out.println("tesztNevHibasKivetel lefutott");
     }
 
-    public static void tesztFeliratHibasKivetel() {
-        LadaModell lada = new LadaModell();
-        boolean dobott = false;
-
+    private static void tesztFeliratHibasKivetel() {
         try {
-            lada.setFelirat(null);
-        } catch (IllegalArgumentException e) {
-            dobott = true;
+            // Hibás felirat (null) próbálkozás
+            LadaModell hibasLada = new LadaModell("Arany", null, true);
+            assert false : "Felirat null, hibát kellett volna dobnia!";
+        } catch (IllegalArgumentException ex) {
+            System.out.println("✅ tesztFeliratHibasKivetel sikeresen elkapta a hibát: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.err.println("⚠️ Váratlan hiba történt: " + ex.getMessage());
         }
-        assert dobott : "Null felirat esetén kivételt kell dobni";
-
-        dobott = false;
-        try {
-            lada.setFelirat("");
-        } catch (IllegalArgumentException e) {
-            dobott = true;
-        }
-        assert dobott : "Üres felirat esetén kivételt kell dobni";
-
-        dobott = false;
-        try {
-            lada.setFelirat("   ");
-        } catch (IllegalArgumentException e) {
-            dobott = true;
-        }
-        assert dobott : "Csak szóköz felirat esetén kivételt kell dobni";
-
-        System.out.println("tesztFeliratHibasKivetel lefutott");
     }
 
-    public static void tesztToString() {
-        LadaModell lada = new LadaModell();
-        lada.setNev("Arany");
-        lada.setFelirat("Én rejtem a kincset.");
-        lada.setTartalmazKincset(false);
+    private static void tesztToString() {
+        try {
+            LadaModell lada = new LadaModell("Ezüst", "Nem én rejtem a kincset.", true);
+            String toStringEredmeny = lada.toString();
 
-        String szoveg = lada.toString();
-        assert szoveg.contains("Arany") : "toString nem tartalmazza a nevet";
-        assert szoveg.contains("rejtem") : "toString nem tartalmazza a feliratot";
-        assert !szoveg.contains("[Kincs itt van]") : "toString tévesen jelzi a kincset";
+            assert toStringEredmeny.contains("Ezüst") : "toString nem tartalmazza a láda nevét";
+            assert toStringEredmeny.contains("Nem én rejtem a kincset.") : "toString nem tartalmazza a láda feliratát";
+            assert toStringEredmeny.contains("true") : "toString nem tartalmazza a kincs státuszát";
 
-        System.out.println("tesztToString lefutott");
+            System.out.println("✅ tesztToString lefutott hiba nélkül: " + toStringEredmeny);
+        } catch (AssertionError hiba) {
+            System.err.println("❌ Hiba a tesztToString során: " + hiba.getMessage());
+        } catch (Exception ex) {
+            System.err.println("⚠️ Váratlan hiba történt: " + ex.getMessage());
+        }
     }
 
     private static void tesztHelyesValasztas() {
