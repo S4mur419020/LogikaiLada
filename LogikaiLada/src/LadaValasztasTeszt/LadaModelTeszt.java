@@ -8,14 +8,19 @@ public class LadaModelTeszt {
 
     public static void main(String[] args) {
         LadaModelTeszt teszt = new LadaModelTeszt();
+        LogikaiLadaControllerTeszt logikaiteszt = new LogikaiLadaControllerTeszt();
+        //Boti
         teszt.tesztFeliratok();
         teszt.tesztKincsesLada();
+        
+        //Tomi
         teszt.tesztNemLetezoLada();
-
-        LogikaiLadaControllerTeszt logikaiteszt = new LogikaiLadaControllerTeszt();
         logikaiteszt.tesztKincsTalalat();
-        //teszt.tesztVisszajelzesSzoveg();
-        //teszt.tesztHibasLadaAzonosito();
+        
+        //Bence
+        teszt.tesztVisszajelzesSzoveg();
+        teszt.tesztHibasLadaAzonosito();
+        
         System.out.println("Az összes teszt lefutott!");
     }
 
@@ -137,7 +142,7 @@ public class LadaModelTeszt {
                 System.err.println("❌ tesztHibasLadaAzonosito hiba: " + e.getMessage());
             } catch (Exception e) {
                 System.err.println("⚠️ tesztHibasLadaAzonosito kivétel: " + e.getMessage());
-    }
+            }
         }
     }
-        }
+}
