@@ -48,6 +48,10 @@ public class GuiNezet extends javax.swing.JFrame {
         jTextPane1.setText(uzenet);
     }
 
+    public String getTextPaneSzoveg() {
+        return jTextPane1.getText();
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -242,19 +246,18 @@ public class GuiNezet extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         int valasz = javax.swing.JOptionPane.showConfirmDialog(
-        this,
-        "Biztosan ki szeretnél lépni?",
-        "Kilépés megerősítése",
-        javax.swing.JOptionPane.YES_NO_OPTION,
-        javax.swing.JOptionPane.QUESTION_MESSAGE
-    );
+                this,
+                "Biztosan ki szeretnél lépni?",
+                "Kilépés megerősítése",
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.QUESTION_MESSAGE
+        );
 
-    if (valasz == javax.swing.JOptionPane.YES_OPTION) {
-        System.exit(0);
-    }
+        if (valasz == javax.swing.JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
     }//GEN-LAST:event_formWindowClosing
 
-  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;

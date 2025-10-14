@@ -1,6 +1,7 @@
 package LadaValasztasTeszt;
 
 import modell.LadaModell;
+import modell.LadaJatekModell;
 import nezet.GuiNezet;
 import vezerlo.LogikaiLadaController;
 
@@ -12,23 +13,22 @@ public class LadaModelTeszt {
         //Boti
         teszt.tesztFeliratok();
         teszt.tesztKincsesLada();
-        
-        //Tomi
+        //Bence
         teszt.tesztNemLetezoLada();
         logikaiteszt.tesztKincsTalalat();
-        
-        //Bence
+        //Tomi
         logikaiteszt.tesztVisszajelzesSzoveg();
         logikaiteszt.tesztHibasLadaAzonosito();
-        
-        System.out.println("Az összes teszt lefutott!");
+
+        System.out.println("✅ Az összes teszt lefutott!");
     }
 
     private void tesztFeliratok() {
         try {
-            LadaModell arany = new LadaModell("Arany", "Én rejtem a kincset!", false);
-            LadaModell ezust = new LadaModell("Ezüst", "Nem én rejtem a kincset!", false);
-            LadaModell bronz = new LadaModell("Bronz", "Az arany láda hazudik!", false);
+            LadaJatekModell jatek = new LadaJatekModell();
+            LadaModell arany = jatek.getLadaLista().get(0);
+            LadaModell ezust = jatek.getLadaLista().get(1);
+            LadaModell bronz = jatek.getLadaLista().get(2);
 
             assert !arany.getFelirat().isBlank() : "Arany ládának nincs felirata";
             assert !ezust.getFelirat().isBlank() : "Ezüst ládának nincs felirata";
@@ -46,19 +46,13 @@ public class LadaModelTeszt {
 
     private void tesztKincsesLada() {
         try {
-            LadaModell arany = new LadaModell("Arany", "Én rejtem a kincset!", true);
-            LadaModell ezust = new LadaModell("Ezüst", "Nem én rejtem a kincset!", false);
-            LadaModell bronz = new LadaModell("Bronz", "Az arany láda hazudik!", false);
+            LadaJatekModell jatek = new LadaJatekModell();
 
             int kincsDb = 0;
-            if (arany.isTartalmazKincset()) {
-                kincsDb++;
-            }
-            if (ezust.isTartalmazKincset()) {
-                kincsDb++;
-            }
-            if (bronz.isTartalmazKincset()) {
-                kincsDb++;
+            for (LadaModell lada : jatek.getLadaLista()) {
+                if (lada.isTartalmazKincset()) {
+                    kincsDb++;
+                }
             }
 
             assert kincsDb == 1 : "Nem pontosan egy ládában van kincs";
@@ -83,13 +77,35 @@ public class LadaModelTeszt {
         private void tesztKincsTalalat() {
             try {
                 GuiNezet nezet = new GuiNezet();
-                LadaModell modell = new LadaModell("Arany", "Én rejtem a kincset!", true);
-                LogikaiLadaController vezerlo = new LogikaiLadaController(modell, nezet);
+                LadaJatekModell jatek = new LadaJatekModell();
+                LogikaiLadaController vezerlo = new LogikaiLadaController(jatek, nezet);
 
-                nezet.getRdbArany().doClick(); 
+                // Lekérjük a kincses ládát ciklussal
+                LadaModell kincsesLada = null;
+                for (LadaModell lada : jatek.getLadaLista()) {
+                    if (lada.isTartalmazKincset()) {
+                        kincsesLada = lada;
+                        break;
+                    }
+                }
 
-                String szoveg = ""; 
+                if (kincsesLada == null) {
+                    throw new RuntimeException("Nincs kincses láda!");
+                }
 
+                String kincsesNev = kincsesLada.getNev();
+
+                // Kiválasztjuk a megfelelő rádiógombot
+                if (kincsesNev.equals("Arany láda")) {
+                    nezet.getRdbArany().doClick();
+                } else if (kincsesNev.equals("Ezüst láda")) {
+                    nezet.getRdbEzust().doClick();
+                } else if (kincsesNev.equals("Bronz láda")) {
+                    nezet.getRdbBronz().doClick();
+                }
+
+                // Ellenőrizzük a visszajelzést
+                String szoveg = nezet.getTextPaneSzoveg();
                 assert szoveg.contains("Gratulálok") : "Nem a megfelelő visszajelzést kaptuk: " + szoveg;
 
                 System.out.println("✅ tesztKincsTalalat sikeres");
@@ -100,16 +116,20 @@ public class LadaModelTeszt {
             }
         }
 
+        
+
         private void tesztVisszajelzesSzoveg() {
             try {
                 GuiNezet nezet = new GuiNezet();
-                LadaModell modell = new LadaModell("Arany", "Én rejtem a kincset!", true);
-                new LogikaiLadaController(modell, nezet);
+                LadaJatekModell jatek = new LadaJatekModell();
+                new LogikaiLadaController(jatek, nezet);
 
-                String uzenet = "🎉 Gratulál A(z) Arany ládában volt a kincs!";
+                String uzenet = "🎉 Gratulálok! A(z) Arany ládában volt a kincs!";
                 nezet.mutat(uzenet);
 
-                assert nezet.getjLabel1() != null : "A visszajelzés nem jelent meg";
+                String szoveg = nezet.getTextPaneSzoveg();
+                assert szoveg.contains("Gratulálok") : "A visszajelzés nem jelent meg megfelelően";
+
                 System.out.println("✅ tesztVisszajelzesSzoveg sikeres");
             } catch (AssertionError e) {
                 System.err.println("❌ tesztVisszajelzesSzoveg hiba: " + e.getMessage());
@@ -121,21 +141,19 @@ public class LadaModelTeszt {
         private void tesztHibasLadaAzonosito() {
             try {
                 GuiNezet nezet = new GuiNezet();
-                LadaModell modell = new LadaModell("Diamant", "Rejtett kincs", true); 
-                LogikaiLadaController vezerlo = new LogikaiLadaController(modell, nezet);
+                LadaModell hamis = new LadaModell("Gyémánt", "Nem létező láda", true);
+                LadaJatekModell jatek = new LadaJatekModell();
+                jatek.getLadaLista().add(hamis);
 
-                
-                boolean talalat = false;
-                if ("Arany".equals(modell.getNev())) {
-                    nezet.getRdbArany().doClick();
-                } else if ("Ezüst".equals(modell.getNev())) {
-                    nezet.getRdbEzust().doClick();
-                } else if ("Bronz".equals(modell.getNev())) {
-                    nezet.getRdbBronz().doClick();
-                } else {
-                    talalat = true; 
+                LogikaiLadaController vezerlo = new LogikaiLadaController(jatek, nezet);
+
+                boolean ismeretlen = true;
+                if ("Arany láda".equals(hamis.getNev())
+                        || "Ezüst láda".equals(hamis.getNev())
+                        || "Bronz láda".equals(hamis.getNev())) {
+                    ismeretlen = false;
                 }
-                assert talalat : "A vezérlő nem kezelte a nem létező ládát";
+                assert ismeretlen : "A vezérlő nem kezelte le a nem létező ládát";
 
                 System.out.println("✅ tesztHibasLadaAzonosito sikeres");
             } catch (AssertionError e) {

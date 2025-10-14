@@ -35,14 +35,14 @@ public class LadaModell {
    
     public void setNev(String nev) {
         if (nev == null || nev.isBlank()) {
-            throw new IllegalArgumentException("");
+            throw new IllegalArgumentException("A láda felirata nem lehet üres vagy null érték!");
         }
         this.nev = nev;
     }
 
     public void setFelirat(String felirat) {
         if (felirat == null || felirat.isBlank()) {
-            throw new IllegalArgumentException("");
+            throw new IllegalArgumentException("A láda felirata nem lehet üres vagy null érték!");
         }
         this.felirat = felirat;
     }
