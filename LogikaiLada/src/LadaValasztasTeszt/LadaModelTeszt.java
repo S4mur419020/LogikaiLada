@@ -18,8 +18,8 @@ public class LadaModelTeszt {
         logikaiteszt.tesztKincsTalalat();
         
         //Bence
-        teszt.tesztVisszajelzesSzoveg();
-        teszt.tesztHibasLadaAzonosito();
+        logikaiteszt.tesztVisszajelzesSzoveg();
+        logikaiteszt.tesztHibasLadaAzonosito();
         
         System.out.println("Az összes teszt lefutott!");
     }
@@ -86,9 +86,9 @@ public class LadaModelTeszt {
                 LadaModell modell = new LadaModell("Arany", "Én rejtem a kincset!", true);
                 LogikaiLadaController vezerlo = new LogikaiLadaController(modell, nezet);
 
-                nezet.getRdbArany().doClick(); // kattintás szimulálása
+                nezet.getRdbArany().doClick(); 
 
-                String szoveg = ""; // Itt van a visszajelzés
+                String szoveg = ""; 
 
                 assert szoveg.contains("Gratulálok") : "Nem a megfelelő visszajelzést kaptuk: " + szoveg;
 
@@ -121,10 +121,10 @@ public class LadaModelTeszt {
         private void tesztHibasLadaAzonosito() {
             try {
                 GuiNezet nezet = new GuiNezet();
-                LadaModell modell = new LadaModell("Diamant", "Rejtett kincs", true); // létező ládákon kívül
+                LadaModell modell = new LadaModell("Diamant", "Rejtett kincs", true); 
                 LogikaiLadaController vezerlo = new LogikaiLadaController(modell, nezet);
 
-                // Nincs megfelelő rádiógomb, de próbáljuk meg "kiválasztani"
+                
                 boolean talalat = false;
                 if ("Arany".equals(modell.getNev())) {
                     nezet.getRdbArany().doClick();
@@ -133,7 +133,7 @@ public class LadaModelTeszt {
                 } else if ("Bronz".equals(modell.getNev())) {
                     nezet.getRdbBronz().doClick();
                 } else {
-                    talalat = true; // nincs rádiógomb a modell nevénél
+                    talalat = true; 
                 }
                 assert talalat : "A vezérlő nem kezelte a nem létező ládát";
 
