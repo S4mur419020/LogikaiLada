@@ -137,7 +137,7 @@ public class LadaModelTeszt {
                 System.err.println("❌ tesztHibasLadaAzonosito hiba: " + e.getMessage());
             } catch (Exception e) {
                 System.err.println("⚠️ tesztHibasLadaAzonosito kivétel: " + e.getMessage());
-            }
+    }
         }
     }
-}
+        }
